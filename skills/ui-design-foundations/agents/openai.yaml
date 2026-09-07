@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Design Foundations"
+  short_description: "Apply interaction, focus, and layout principles"
+  default_prompt: "Use $ui-design-foundations to review this interface's interaction model, focus behavior, layout, and hierarchy."

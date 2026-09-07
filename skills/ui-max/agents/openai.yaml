@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Max"
+  short_description: "Run the complete web UI quality workflow"
+  default_prompt: "Use $ui-max for a comprehensive design, implementation, and audit pass on this web interface."

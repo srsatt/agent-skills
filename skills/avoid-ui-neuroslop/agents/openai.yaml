@@ -1,0 +1,4 @@
+interface:
+  display_name: "Avoid UI Neuroslop"
+  short_description: "Remove narrational and requirement-leaking UI"
+  default_prompt: "Use $avoid-ui-neuroslop to remove unnecessary visible text from this interface."
