@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Checklist"
+  short_description: "Generate goal-specific QA checklists"
+  default_prompt: "Use $create-checklist to create a structured QA checklist for this feature."
