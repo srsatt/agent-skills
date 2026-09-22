@@ -34,7 +34,6 @@ npx skills add srsatt/agent-skills --skill avoid-ui-neuroslop
 This checkout pins upstream skills rather than republishing them:
 
 ```sh
-npx skills add vercel-labs/agent-browser --skill agent-browser
 npx skills add juliusbrussee/caveman --skill cavecrew caveman caveman-commit caveman-compress caveman-help caveman-review caveman-stats
 npx skills add lirantal/gh-cp --skill nodejs-cli-best-practices
 npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance
