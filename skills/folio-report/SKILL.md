@@ -1,6 +1,6 @@
 ---
 name: folio-report
-description: Recover previous repository insights from Folio, or create a durable standalone report for substantial investigations, implementations, architecture work, benchmarks, plans, incidents, or reviews. Use when prior reports can inform current work, or users benefit from attached test media, repository-file links, and anchored review feedback. Do not use for brief answers or routine status updates.
+description: Recover previous repository insights from Folio, or create a durable standalone report for substantial investigations, implementations, architecture work, benchmarks, plans, incidents, or reviews. Use when prior reports can inform current work, or users benefit from attached test media, repository-file links, reviewable Mermaid diagrams, and anchored feedback. Do not use for brief answers or routine status updates.
 ---
 
 # Folio report
@@ -51,15 +51,44 @@ If no relevant report exists, continue normally.
        {% /chart %}
 
    Do not use `data.url`, invent fields or semantic types, emit Plotly configuration, or paste large datasets. Prefer tables when chart does not improve comprehension.
-8. Make report stand alone without conversation transcript.
+8. When relationships, flow, sequence, or state are clearer visually, add a fenced `mermaid` diagram. Folio renders it offline, and readers can select diagram labels to attach review comments. Keep labels concise and stable; include Mermaid accessibility metadata; use self-contained syntax without links or external resources:
+
+       ```mermaid
+       flowchart LR
+         accTitle: Report review flow
+         accDescr: A report moves from authoring through review to revision.
+         Author --> Review --> Revision
+       ```
+
+   Prefer prose or a small table when a diagram does not materially improve understanding. Read [references/format.md](references/format.md) for Mermaid constraints and a sequence-diagram example.
+9. Make report stand alone without conversation transcript.
 
 ### Direct feedback callback
 
-When current agent has a reliable non-interactive command that targets this exact session and accepts a prompt on stdin, configure it during creation:
+Before creating the report, actively discover whether this exact agent session has
+an stdin-safe callback. Do not wait for the user to request it.
+
+1. When running under Workmux, run `workmux list --json`, match the current Git
+   root to one open entry, and use its exact `handle`:
+
+       workmux send <exact-handle>
+
+2. Otherwise, when `CODEX_THREAD_ID` contains the current Codex session UUID,
+   use the explicit continuation command:
+
+       codex exec resume <CODEX_THREAD_ID> -
+
+3. If neither target can be proven, omit the callback. Never use `--last`, guess
+   a Workmux handle, or put feedback in command arguments.
+
+Configure the discovered command during creation:
 
     folio create --stdin --json --callback-command '<command>'
 
-Workmux example: `workmux send <current-worktree-name>`. This works for Codex or Claude running inside that Workmux pane. For direct clients, use an explicitly session-addressed dispatch command; never guess a session, use “latest”, or embed feedback in shell arguments. Omit callback when no reliable command exists.
+Workmux is preferred when available because it sends to the live pane. Direct
+Codex uses `codex exec resume` with the exact UUID and `-`, so Folio feedback is
+read from stdin. Verify the JSON result has `"callbackConfigured":true` whenever
+a reliable target was found.
 
 Callback button works only from loopback archive. Reuse an existing archive or start `folio serve --portless` through a managed long-running process, then provide its stable `https://folio.localhost` report URL. Fall back to `folio serve` when Portless is unavailable. Never enable callback through non-loopback binding. Folio shows exact command and requires user confirmation before piping feedback to it.
 

@@ -77,6 +77,32 @@ Attach local image or video artifacts:
 
 Media paths are Git-root-relative. Folio reads them during creation and embeds their bytes as data URLs, so copied `report.html` remains complete and offline. Images require useful `alt` text. Optional attributes: `kind="image|video"`, `caption`, `title`.
 
+## Mermaid diagrams
+
+Use a fenced `mermaid` block when a flow, sequence, state model, or dependency graph communicates structure better than prose or a table:
+
+````markdoc
+```mermaid
+sequenceDiagram
+  accTitle: Review feedback round trip
+  accDescr: A reviewer comments on a report and the agent publishes a revised report.
+  Agent->>Folio: Create report
+  Reviewer->>Folio: Comment on diagram label
+  Folio->>Agent: Send feedback
+  Agent->>Folio: Create revision
+```
+````
+
+Folio renders Mermaid diagrams in standalone, served, desktop, and shared HTML. Diagram-bearing files remain self-contained and offline. Readers can select rendered label text and attach the same anchored comments used for report prose. Markdown exports preserve the Mermaid source.
+
+Rules:
+
+- Use a plain `mermaid` fence; no custom Folio tag wraps it.
+- Add `accTitle` and `accDescr` so the rendered SVG has useful accessible context.
+- Keep visible labels concise and stable because review comments anchor to selected label text.
+- Use self-contained Mermaid syntax. Do not depend on remote images, icon packs, external styles, or click links; Folio renders with Mermaid strict security enabled.
+- Prefer a diagram only when it makes a meaningful relationship easier to understand.
+
 ## Flint charts
 
 Use one fenced `flint` JSON spec inside a `chart` block:
