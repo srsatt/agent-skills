@@ -1,6 +1,6 @@
 ---
 name: avoid-ui-neuroslop
-description: Prevent specification-leaking, redundant, or narrational UI text. Use when designing, implementing, or reviewing interfaces, frontend components, labels, helper text, empty states, badges, captions, notices, or error copy.
+description: Remove purposeless UI copy, decoration, and false status signals. Use when designing, implementing, or reviewing interfaces, visual styling, labels, badges, empty states, or error copy.
 ---
 
 # Avoid UI Neuroslop
@@ -15,6 +15,9 @@ For every visible string, ask:
 > specification, or implementation notes?
 
 If not, remove it.
+
+Apply the same test to visual elements: what does each color, effect, icon,
+badge, or card help the user understand or do?
 
 ## Make every string serve a user need
 
@@ -48,9 +51,35 @@ interpret the absence as loading, an error, a filtering problem, missing
 configuration, or a situation requiring action. State only what they need to
 know or do.
 
+## Make visual choices earn their place
+
+Avoid defaulting to gradients (especially purple), unrelated accent colors,
+glowing or pulsing badges, pill-shaped cards, glass effects, and decorative
+emoji to make an interface feel finished. Use color, shape, and motion
+consistently to show hierarchy, grouping, interaction, or real state. If
+removing an effect changes none of those, remove it. These styles are not
+forbidden when they serve a clear product purpose.
+
+Choose type for the product and its content instead of reflexively using Inter
+or a programming font. Do not sprinkle `//`, terminal cues, or code styling
+around unrelated text to make it look technical. Check that icons, SVGs, ASCII
+art, text, and controls align with their surrounding content at actual screen
+sizes; a polished effect does not excuse sloppy layout.
+
+Treat status labels such as `Active` and `Verified` as claims about the system.
+Show them only when backed by a real state or check, when a different state is
+possible, and when users benefit from seeing the distinction. Never animate a
+status merely to suggest activity. Keep useful loading and progress feedback.
+
+Replace generic slogans, hype words, and automatic grey subtitles with concrete
+information users can act on. A functional screen does not need landing-page
+copy or a personalized welcome by default. Do not put words from a design brief,
+chat prompt, or implementation detail on screen just because they appeared in
+the brief.
+
 ## Audit before finishing
 
-Inspect every visible string individually and ask:
+Inspect every visible string and decorative or status element individually and ask:
 
 1. What user need does this serve?
 2. Would someone who never saw the prompt understand why it is here?
@@ -58,4 +87,9 @@ Inspect every visible string individually and ask:
 4. Does this expose a requirement or reasoning from the specification?
 5. What breaks if this string is deleted?
 
-If deleting it breaks nothing for the user, delete it.
+For a badge or status, also ask what produces it and whether it can change. If
+deleting an element breaks nothing for the user, delete it.
+
+## Source
+
+- [10 tells of a slop ui](https://hereticpleb.vercel.app/blog/10-tells-of-slop)
