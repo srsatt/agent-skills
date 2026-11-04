@@ -49,11 +49,30 @@
       "skillPath": "skills/modern-web-guidance/SKILL.md",
       "computedHash": "c75f98ef13e63bcf0c074f6e7651ecb567ffcd78f2527d085a7cddd530073c4f"
     },
+    "no-comments": {
+      "source": "cursor/plugins",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "pstack/skills/no-comments/SKILL.md",
+      "computedHash": "56ed5baf19093f4ff5c485316dbe5e53c7af0e9a98bac5ed6185cc4041b27acc"
+    },
     "nodejs-cli-best-practices": {
       "source": "lirantal/gh-cp",
       "sourceType": "github",
       "skillPath": ".github/skills/nodejs-cli-best-practices/SKILL.md",
       "computedHash": "c235df11ee031dfe0944c0f00a1ac062b7eb352f340ed8877f58d1cceef0a78c"
+    },
+    "test-audit": {
+      "source": "mblode/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/test-audit/SKILL.md",
+      "computedHash": "5977839596c7ec985b06298b1b40acb07a0de1e0e3d4745f49d29665f346de87"
+    },
+    "testing-anti-patterns": {
+      "source": "event4u-app/agent-config",
+      "sourceType": "github",
+      "skillPath": "src/skills/testing-anti-patterns/SKILL.md",
+      "computedHash": "29d74fa26e0b46adb921e5f837ed51c86de59203cfce97c48055c6b36a1188ae"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
