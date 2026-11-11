@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "cargo-fallow": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/cargo-fallow/SKILL.md",
+      "computedHash": "b212a5564fb004fdc3460b62d57726f231e976492ee922400cb425af3402c27f"
+    },
     "cavecrew": {
       "source": "juliusbrussee/caveman",
       "sourceType": "github",
@@ -42,6 +48,36 @@
       "sourceType": "github",
       "skillPath": "skills/caveman-stats/SKILL.md",
       "computedHash": "5aba475d0e43a26d7448e6537902e3137beca3024663dfdecf1009cbe16bc299"
+    },
+    "fallow": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow/SKILL.md",
+      "computedHash": "07de30c7c0e01771c7e7690f1722ff1894d7b02c1bfaa661f4062cb3ed59d2c4"
+    },
+    "fallow-cloud-setup": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow-cloud-setup/SKILL.md",
+      "computedHash": "600aea4666863d26b7e3afb6c43875e3f6a5f9fb2e9b4b7556a87d90936c0279"
+    },
+    "fallow-codex-onboarding": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow-codex-onboarding/SKILL.md",
+      "computedHash": "3ad00ed915b023b8435b4f986e52284e8a82b4dccc625a7e444b5a785e605ce1"
+    },
+    "fallow-review": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow-review/SKILL.md",
+      "computedHash": "69c217c143cca0baad8cdf2a33f012fd0fa60e82158fd0d7fafd17605283267b"
+    },
+    "fallow-setup": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow-setup/SKILL.md",
+      "computedHash": "861d8c555c2e4e0d3b453dca79b10ec5cc474a6f94fc7c9fd6af5aca13a259a6"
     },
     "modern-web-guidance": {
       "source": "GoogleChrome/modern-web-guidance",
