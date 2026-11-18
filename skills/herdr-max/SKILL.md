@@ -1,11 +1,11 @@
 ---
-name: herdr-usage
-description: Use and troubleshoot Herdr's desktop layout, persistent terminals, agents, and worktrees using this setup's repository conventions.
+name: herdr-max
+description: Orchestrate Herdr app and core skills with this setup's repository conventions for work tabs, worktrees, persistent terminals, and agents. Use when spawning agents in Herdr, opening a worktree tab, or troubleshooting the Herdr layout.
 ---
 
-# Herdr usage
+# Herdr max
 
-For desktop interface guidance see [herdr-app](/Users/pavel.reutov/dotfiles/codex/skills/herdr-app/SKILL.md); for persistent terminals and agents follow [herdr-core](/Users/pavel.reutov/dotfiles/codex/skills/herdr-core/SKILL.md). This setup has the `hc` and `herdr-app` CLIs (`herdr-app ls`, `herdr-app do <command>`, `herdr-app commands`); `herdr-app` needs the window open. Read `hc --skill` before operating Herdr Core and the app's installed `AGENTS.md` before interface changes.
+Load `herdr-app` for desktop interface, layout, keys and mods; load `herdr-core` for persistent terminals and agents. This skill adds the repository conventions on top of them. This setup has the `hc` and `herdr-app` CLIs (`herdr-app ls`, `herdr-app do <command>`, `herdr-app commands`); `herdr-app` needs the window open. Read `hc --skill` before operating Herdr Core and the app's installed `AGENTS.md` before interface changes.
 
 ## Open a work tab from a script or agent
 
