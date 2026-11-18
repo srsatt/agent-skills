@@ -20,6 +20,8 @@ spots. Run this workflow in a fresh context:
   Do not pass the author's summary, rationale, or conclusions.
 - A reviewer that was handed such a summary ignores it and judges the diff
   against the requirement.
+- When another harness is available, load `$cross-review` to run the pass in a
+  different model family.
 
 ## Workflow
 

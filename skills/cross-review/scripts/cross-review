@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Review the current branch with another agent harness (a different model family) over ACP, in a fresh context.
+# usage: cross-review <codex|claude> <base-ref>   (the requirement text is read from stdin)
+# Environment such as CODEX_HOME or CLAUDE_CONFIG_DIR is inherited, so callers choose the account.
+set -euo pipefail
+
+die() {
+  echo "cross-review: $1" >&2
+  exit "${2:-1}"
+}
+
+[ "$#" -eq 2 ] || die "usage: cross-review <codex|claude> <base-ref> < requirement" 2
+other="$1"
+base="$2"
+case "$other" in
+  codex | claude) ;;
+  *) die "the harness must be codex or claude" 2 ;;
+esac
+requirement="$(cat)"
+[ -n "$requirement" ] || die "the requirement text is empty; pass it on stdin" 2
+git rev-parse --verify --quiet "$base^{commit}" >/dev/null || die "unknown base ref: $base" 2
+
+prompt="You are a read-only reviewer. Follow the review-max skill when it is installed; otherwise review correctness, readability, architecture, security, and performance, tests first. Judge the diff below only against this requirement:
+
+$requirement
+
+Read surrounding code when you need it. Do not modify files. Report each finding with file:line, a concrete failure scenario, and a fix. Drop speculative points. If nothing survived, say so.
+
+Diff ($base...HEAD):
+
+$(git diff "$base"...HEAD)"
+
+if [ -n "${CROSS_REVIEW_DRY:-}" ]; then
+  printf 'acpx %s exec (read and search only)\n%s\n' "$other" "$prompt"
+  exit 0
+fi
+
+command -v acpx >/dev/null 2>&1 || die "acpx is missing (npm install -g acpx)" 127
+
+printf '%s' "$prompt" | acpx \
+  --cwd "$PWD" \
+  --format quiet \
+  --permission-policy '{"autoApprove":["read","search"],"defaultAction":"deny"}' \
+  "$other" exec --file -
