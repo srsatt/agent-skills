@@ -26,9 +26,17 @@ printf '%s' "<requirement the change must satisfy>" | cross-review codex origin/
 
 - Send only the requirement and the base ref. Do not send your summary, plan,
   or reasons why the change is correct: they bias the reviewer.
-- The command embeds `git diff <base>...HEAD` in the prompt. The reviewer can
-  read and search the repository, but shell, edit, and write requests are
-  denied.
+- The command embeds `git diff <base>...HEAD` in the prompt. It asks the
+  other harness for read and search access only, through an ACP permission
+  policy and, for Claude, an allowed-tools list. This is best effort: the
+  harness's own rules and auto mode can still allow more, so run it in a
+  checkout you can discard if the repository is untrusted.
+- A nested call exits with an error, so a reviewer cannot hand the review back.
+- The wait is limited to 540 seconds; set `CROSS_REVIEW_TIMEOUT` to change it.
+  When you run the command from a tool with its own timeout, set that above
+  540 seconds.
+- Claude as reviewer needs the user's Claude settings for authentication when
+  they route through a proxy: set `ACPX_CLAUDE_INCLUDE_USER_SETTINGS=1`.
 - To pick an account or profile, set the harness's own variable for the
   command, for example `CODEX_HOME=... cross-review codex origin/main` or
   `CLAUDE_CONFIG_DIR=... cross-review claude origin/main`.

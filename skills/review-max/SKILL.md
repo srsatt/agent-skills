@@ -21,7 +21,8 @@ spots. Run this workflow in a fresh context:
 - A reviewer that was handed such a summary ignores it and judges the diff
   against the requirement.
 - When another harness is available, load `$cross-review` to run the pass in a
-  different model family.
+  different model family. Do this only once: a reviewer that received its task
+  from `cross-review` completes the pass itself and never forwards it.
 
 ## Workflow
 
