@@ -1,5 +1,5 @@
 ---
-name: herdr-max
+name: meta-herdr
 description: Orchestrate Herdr app and core skills with this setup's repository conventions for work tabs, worktrees, persistent terminals, and agents. Use when spawning agents in Herdr, opening a worktree tab, or troubleshooting the Herdr layout.
 ---
 

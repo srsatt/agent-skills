@@ -1,9 +1,9 @@
 ---
-name: review-max
-description: Orchestrate graph-grounded review, five-axis code review, test-quality review, comment review, and UI copy review for a comprehensive pass over a diff or pull request. Use when the user invokes review-max or asks for a maximum-quality review of a change.
+name: meta-review
+description: Orchestrate graph-grounded review, five-axis code review, test-quality review, comment review, and UI copy review for a comprehensive pass over a diff or pull request. Use when the user invokes meta-review or asks for a maximum-quality review of a change.
 ---
 
-# Review Max
+# Meta review
 
 Use the installed review skills as one ordered pass over the same diff. Keep
 their scopes intact; do not replace their instructions with a summary. If a

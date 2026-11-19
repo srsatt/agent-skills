@@ -14,7 +14,7 @@ Reusable agent skills for product, engineering, and interface work.
   media, charts, and review feedback.
 - `ui-design-foundations` applies interaction heuristics, readable layout,
   predictable focus behavior, and clear visual hierarchy.
-- `ui-max` combines both skills with modern web implementation guidance and a
+- `meta-ui` combines both skills with modern web implementation guidance and a
   final interface audit.
 
 ## Install
@@ -42,7 +42,7 @@ npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance
 npx skills add vercel-labs/agent-skills --skill web-design-guidelines
 ```
 
-`ui-max` requires `modern-web-guidance` and `web-design-guidelines`.
+`meta-ui` requires `modern-web-guidance` and `web-design-guidelines`.
 
 ### Benjamin-Plus
 

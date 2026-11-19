@@ -1,6 +1,6 @@
 ---
-name: ui-max
-description: Orchestrate UI foundations, anti-neuroslop copy review, modern web guidance, and code audit for a comprehensive interface pass. Use when the user invokes ui-max or requests maximum-quality end-to-end web UI design, implementation, or review.
+name: meta-ui
+description: Orchestrate UI foundations, anti-neuroslop copy review, modern web guidance, and code audit for a comprehensive interface pass. Use when the user invokes meta-ui or requests maximum-quality end-to-end web UI design, implementation, or review.
 ---
 
 # UI Max
