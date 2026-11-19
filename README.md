@@ -8,8 +8,8 @@ Reusable agent skills for product, engineering, and interface work.
   leaks implementation requirements.
 - `create-checklist` generates smoke, functional, exploratory, acceptance, and
   security QA checklists from product evidence.
-- `cross-review` sends a branch diff to another agent harness over ACP for a
-  read-only review in a different model family.
+- `cross-review` starts the other agent harness as its own read-only reviewer
+  role, for a review in a different model family and a fresh context.
 - `folio-report` creates durable standalone reports with repository evidence,
   media, charts, and review feedback.
 - `ui-design-foundations` applies interaction heuristics, readable layout,

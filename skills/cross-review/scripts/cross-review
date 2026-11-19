@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Review the current branch with another agent harness (a different model family) over ACP, in a fresh context.
-# usage: cross-review <codex|claude> <base-ref>   (the requirement text is read from stdin)
-# Environment such as CODEX_HOME or CLAUDE_CONFIG_DIR is inherited, so callers choose the account.
+# Review changes with the other agent harness (a different model family) in a fresh context, as that harness's own reviewer role.
+# usage: cross-review <codex|claude> <--uncommitted | --commit SHA | BASE_REF>   (the requirement text is read from stdin)
+# Environment such as CODEX_HOME is inherited, so callers choose the account.
 set -euo pipefail
 
 die() {
@@ -11,41 +11,56 @@ die() {
 
 [ -z "${CROSS_REVIEW_ACTIVE:-}" ] || die "nested cross-review refused" 2
 export CROSS_REVIEW_ACTIVE=1
-[ "$#" -eq 2 ] || die "usage: cross-review <codex|claude> <base-ref> < requirement" 2
+
+usage="usage: cross-review <codex|claude> <--uncommitted | --commit SHA | BASE_REF> < requirement"
+[ "$#" -ge 2 ] || die "$usage" 2
 other="$1"
-base="$2"
 case "$other" in
   codex | claude) ;;
   *) die "the harness must be codex or claude" 2 ;;
 esac
+
+case "$2" in
+  --uncommitted)
+    [ "$#" -eq 2 ] || die "$usage" 2
+    target="the uncommitted changes (staged, unstaged, and untracked files): run \`git status --short\`, \`git diff HEAD\`, and read the untracked files"
+    ;;
+  --commit)
+    [ "$#" -eq 3 ] || die "$usage" 2
+    git rev-parse --verify --quiet "$3^{commit}" >/dev/null || die "unknown commit: $3" 2
+    target="the commit $3: run \`git show $3\`"
+    ;;
+  -*) die "$usage" 2 ;;
+  *)
+    [ "$#" -eq 2 ] || die "$usage" 2
+    git rev-parse --verify --quiet "$2^{commit}" >/dev/null || die "unknown base ref: $2" 2
+    target="the changes from $2 to HEAD: run \`git diff $2...HEAD\`"
+    ;;
+esac
+
 requirement="$(cat)"
 [ -n "$requirement" ] || die "the requirement text is empty; pass it on stdin" 2
-git rev-parse --verify --quiet "$base^{commit}" >/dev/null || die "unknown base ref: $base" 2
 
-prompt="You are a read-only reviewer. Follow the review-max skill when it is installed; otherwise review correctness, readability, architecture, security, and performance, tests first. Judge the diff below only against this requirement:
+prompt="Review $target. Judge the changes only against this requirement:
 
 $requirement
 
-Complete this review yourself in this session. Do not delegate it and do not run cross-review. Read surrounding code when you need it. Do not modify files. Report each finding with file:line, a concrete failure scenario, and a fix. Drop speculative points. If nothing survived, say so.
-
-Diff ($base...HEAD):
-
-$(git diff "$base"...HEAD)"
+Complete this review yourself in this session. Do not delegate it and do not run cross-review. Read surrounding code when you need it. Do not modify files. Report each finding with file:line, a concrete failure scenario, and a fix. Drop speculative points. If nothing survived, say so."
 
 if [ -n "${CROSS_REVIEW_DRY:-}" ]; then
-  printf 'acpx %s exec (read and search only)\n%s\n' "$other" "$prompt"
+  printf 'cross-review %s\n%s\n' "$other" "$prompt"
   exit 0
 fi
 
-command -v acpx >/dev/null 2>&1 || die "acpx is missing (npm install -g acpx)" 127
+command -v "$other" >/dev/null 2>&1 || die "$other is not installed" 127
 
-extra=()
-[ "$other" = claude ] && extra=(--allowed-tools "Read,Grep,Glob")
-
-printf '%s' "$prompt" | acpx \
-  --cwd "$PWD" \
-  --format quiet \
-  --timeout "${CROSS_REVIEW_TIMEOUT:-540}" \
-  --permission-policy '{"autoApprove":["read","search"],"defaultAction":"deny"}' \
-  "${extra[@]}" \
-  "$other" exec --file -
+# The reviewer role comes from the other harness's own configuration: ~/.claude/agents/reviewer.md or $CODEX_HOME/reviewer.config.toml.
+if [ "$other" = claude ]; then
+  printf '%s' "$prompt" | claude -p \
+    --agent reviewer \
+    --strict-mcp-config \
+    --max-turns "${CROSS_REVIEW_MAX_TURNS:-30}" \
+    --allowed-tools "Read Grep Glob Bash(git status:*) Bash(git diff:*) Bash(git show:*) Bash(git log:*)"
+else
+  printf '%s' "$prompt" | codex exec -p reviewer -s read-only --ephemeral -
+fi
