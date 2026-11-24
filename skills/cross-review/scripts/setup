@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Check and prepare the machine for the cross-review skill. Safe to re-run; it changes only a symlink in BIN_DIR.
+set -uo pipefail
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+script="$here/scripts/cross-review"
+bin_dir="${BIN_DIR:-$HOME/.local/bin}"
+status=0
+
+ok() { printf 'ok    %s\n' "$1"; }
+bad() { printf 'FAIL  %s\n' "$1"; status=1; }
+
+[ -x "$script" ] && ok "script found: $script" || bad "cross-review script missing or not executable: $script"
+
+for harness in codex claude; do
+  if command -v "$harness" >/dev/null 2>&1; then ok "$harness installed"; else bad "$harness not installed"; fi
+done
+
+if command -v cross-review >/dev/null 2>&1; then
+  ok "cross-review on PATH: $(command -v cross-review)"
+elif [ -x "$script" ]; then
+  mkdir -p "$bin_dir" && ln -sf "$script" "$bin_dir/cross-review" && ok "linked $bin_dir/cross-review"
+  case ":$PATH:" in *":$bin_dir:"*) ;; *) bad "$bin_dir is not on PATH; add it to your shell profile" ;; esac
+fi
+
+[ -f "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/agents/reviewer.md" ] && ok "Claude reviewer role present" || echo "info  no Claude reviewer role (optional): the default agent reviews"
+[ -f "${CODEX_HOME:-$HOME/.codex}/reviewer.config.toml" ] && ok "Codex reviewer role present" || echo "info  no Codex reviewer role (optional): the default profile reviews"
+
+if [ -x "$script" ]; then
+  if (cd "$here" && printf 'setup check' | CROSS_REVIEW_DRY=1 "$script" codex --uncommitted >/dev/null 2>&1); then ok "dry run passes"; else bad "dry run failed: run it inside a git repository"; fi
+fi
+
+echo "Sign-in is not checked here: run 'codex login' and start 'claude' once if a review fails with an auth error."
+exit "$status"

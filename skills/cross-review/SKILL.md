@@ -67,5 +67,6 @@ team's data policy. Model and account configuration belong to the harness.
 1. Check each finding against the code before acting on it. The reviewer works
    from the changes and can be wrong.
 2. Report confirmed findings with `file:line`, the failure scenario, and a fix.
-3. If the command fails, say so and review in the current harness instead. Do
-   not retry in a loop.
+3. If the command fails, stop and report the error as it was printed. Do not
+   review in the current harness instead, and do not retry in a loop. Then read
+   [initial-setup.md](initial-setup.md) and offer to set up the tools.
