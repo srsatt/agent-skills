@@ -54,13 +54,22 @@ fi
 
 command -v "$other" >/dev/null 2>&1 || die "$other is not installed" 127
 
-# The reviewer role comes from the other harness's own configuration: ~/.claude/agents/reviewer.md or $CODEX_HOME/reviewer.config.toml.
 if [ "$other" = claude ]; then
+  claude_agent=()
+  if [ -f "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/agents/reviewer.md" ] || [ -f .claude/agents/reviewer.md ]; then
+    claude_agent=(--agent reviewer)
+  fi
   printf '%s' "$prompt" | claude -p \
-    --agent reviewer \
+    ${claude_agent[@]+"${claude_agent[@]}"} \
     --strict-mcp-config \
+    --tools "Read,Grep,Glob,Bash" \
+    --permission-mode dontAsk \
     --max-turns "${CROSS_REVIEW_MAX_TURNS:-30}" \
     --allowed-tools "Read Grep Glob Bash(git status:*) Bash(git diff:*) Bash(git show:*) Bash(git log:*)"
 else
-  printf '%s' "$prompt" | codex exec -p reviewer -s read-only --ephemeral -
+  codex_profile=()
+  if [ -f "${CODEX_HOME:-$HOME/.codex}/reviewer.config.toml" ]; then
+    codex_profile=(-p reviewer)
+  fi
+  printf '%s' "$prompt" | codex exec ${codex_profile[@]+"${codex_profile[@]}"} -s read-only --ephemeral -
 fi

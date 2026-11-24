@@ -31,6 +31,8 @@ Or install one skill:
 npx skills add srsatt/agent-skills --skill avoid-ui-neuroslop
 ```
 
+For headless or pipeline reviews, see the [cross-review setup and CI instructions](skills/cross-review/SKILL.md).
+
 ## Upstream skills
 
 This checkout pins upstream skills rather than republishing them:
